@@ -1,0 +1,6 @@
+pip~=22.0.2
+setuptools~=59.6.0certifi==2023.7.22
+charset-normalizer==3.2.0
+idna==3.4
+requests==2.31.0
+urllib3==2.0.4
