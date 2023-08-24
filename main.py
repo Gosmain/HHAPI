@@ -8,12 +8,10 @@ if __name__ == '__main__':
 
   hh = HeadHunterAPI()
 
-  for key in key_words:
-    
+  for key in key_words:    
     
     params = HeadHunterParametersForRequest.vacancies(key, 1, 0, 100, True)
-    data = hh.vacancies(params)
-    
+    data = hh.vacancies(params)    
       
     with open('req.txt', 'a', encoding='utf-8') as r, open('vacancies.txt', 'a', encoding='utf-8') as v:
       for el in data['items']:
