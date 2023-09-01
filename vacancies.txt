@@ -1,8 +1,8 @@
 https://hh.ru/vacancy/85936802 QA Engineer для проектов на JS и Python 125280.0 RUR
+https://hh.ru/vacancy/85888707 Lead QA automation/SW Development Engineer in test (python) 282750.0 RUR
 https://hh.ru/vacancy/84538743 Middle Python Developer 187050.0 RUR
 https://hh.ru/vacancy/85439665 Middle Python-разработчик 195750.0 RUR
-https://hh.ru/vacancy/85888707 Lead QA automation/SW Development Engineer in test (python) 282750.0 RUR
-https://hh.ru/vacancy/83701313 QA Automation Engineer (Python/Selenium) 234900.0 RUR
-https://hh.ru/vacancy/84726186 QA / Автотестировщик (Python, Selenium / Selenide) 217500.0 RUR
 https://hh.ru/vacancy/80803272 Senior Python Developer 334950.00000000006 RUR
+https://hh.ru/vacancy/84726186 QA / Автотестировщик (Python, Selenium / Selenide) 217500.0 RUR
+https://hh.ru/vacancy/83701313 QA Automation Engineer (Python/Selenium) 234900.0 RUR
 https://hh.ru/vacancy/84759742 AQA Инженер по автоматизации тестирования (Python) 195750.0 RUR

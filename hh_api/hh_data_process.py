@@ -1,4 +1,5 @@
 from typing import Any, Dict
+from configs import config
 
 
 class HeadHunterDataProcessing:
@@ -6,11 +7,11 @@ class HeadHunterDataProcessing:
   @staticmethod
   def get_salary_value(item: Dict[str, Any]) -> str:
     if item['salary']['to'] and item['salary']['from']:
-      return str((item['salary']['to'] + item['salary']['from']) / 2 * 0.87)
+      return str((item['salary']['to'] + item['salary']['from']) / 2 * config.TAX)
     elif item['salary']['to']:
-      return str(item['salary']['to'] * 0.9 * 0.87)
+      return str(item['salary']['to'] * config.REDUCING_FACTOR * config.TAX)
     else:
-      return str(item['salary']['from'] * 1.1 * 0.87)
+      return str(item['salary']['from'] * config.INCREACING_FACTOR * config.TAX)
 
   @staticmethod
   def get_salary_currency(item: Dict[str, Any]) -> str:
