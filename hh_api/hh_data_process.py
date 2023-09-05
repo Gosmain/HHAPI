@@ -1,17 +1,22 @@
 from typing import Any, Dict
 from configs import config
+from decimal import Decimal, ROUND_FLOOR
 
 
 class HeadHunterDataProcessing:
 
+  
+
   @staticmethod
   def get_salary_value(item: Dict[str, Any]) -> str:
+    tax = 0.87 if item['salary']['gross'] == True else 1
     if item['salary']['to'] and item['salary']['from']:
-      return str((item['salary']['to'] + item['salary']['from']) / 2 * config.TAX)
+      num = Decimal((item['salary']['to'] + item['salary']['from']) / 2 * tax)
     elif item['salary']['to']:
-      return str(item['salary']['to'] * config.REDUCING_FACTOR * config.TAX)
+      num = Decimal(item['salary']['to'] * config.REDUCING_FACTOR * tax)
     else:
-      return str(item['salary']['from'] * config.INCREACING_FACTOR * config.TAX)
+      num = Decimal(item['salary']['from'] * config.INCREACING_FACTOR * tax)
+    return num.quantize(Decimal('1.00'), ROUND_FLOOR)  
 
   @staticmethod
   def get_salary_currency(item: Dict[str, Any]) -> str:
