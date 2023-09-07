@@ -1,5 +1,5 @@
 pip~=22.0.2
-setuptools~=59.6.0certifi==2023.7.22
+setuptools~=59.6.0certifi==2023.7.22 # TODO у тебя два пакета в одной строке, при установке будет ошибка
 charset-normalizer==3.2.0
 idna==3.4
 requests==2.31.0
