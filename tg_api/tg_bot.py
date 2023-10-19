@@ -8,36 +8,35 @@ import telebot
 
 bot = telebot.TeleBot(os.environ['TOKEN'])
 
-@bot.message_handler(content_types=['text']) 
+
+@bot.message_handler(content_types=['text'])
 def get_text_messages(message, ):
-  
     if message.text.lower() == "получить вакансии":
-      
-      with open('vacancies.txt', 'r') as f:
-        
-        for line in f.readlines():
-          
-          bot.send_message(message.from_user.id, line)
-          
+
+        with open('vacancies.txt', 'r') as f:
+
+            for line in f.readlines():
+                bot.send_message(message.from_user.id, line)
+
     elif message.text.lower() == "обновить вакансии":
 
-      HHScribe.clear_file('vacancies.txt')
-      HHScribe.clear_file('req.txt')
+        HHScribe.clear_file('vacancies.txt')
+        HHScribe.clear_file('req.txt')
 
-      hh = HeadHunterAPI()
-      data = []
+        hh = HeadHunterAPI()
+        data = []  # TODO не искользуется
 
-      for key in config.KEY_WORDS:
+        for key in config.KEY_WORDS:
 
-        params = HeadHunterParametersForRequest.vacancies(key, '1')
+            params = HeadHunterParametersForRequest.vacancies(key, '1')
+            # TODO аннотация типов говорит, что на вход должен идти str а не int
 
-        for element in hh.vacancies(params):
+            for element in hh.vacancies(params):
+                HHScribe.write_down('vacancies.txt',
+                                    f'{hhdp.get_name(element)} {hhdp.get_salary_value(element)} {hhdp.get_salary_currency(element)} {hhdp.get_link(element)}\n')
 
-          HHScribe.write_down('vacancies.txt', f'{hhdp.get_name(element)} {hhdp.get_salary_value(element)} {hhdp.get_salary_currency(element)} {hhdp.get_link(element)}\n')
+                HHScribe.write_down('req.txt', f'{hhdp.get_requirement(element)}\n')
 
-          HHScribe.write_down('req.txt', f'{hhdp.get_requirement(element)}\n')
-      
-      bot.send_message(message.from_user.id, "вакансии обновлены")
+        bot.send_message(message.from_user.id, "вакансии обновлены")
 
-
-  
+# TODO в остальном все неплохо, мне нравится)
