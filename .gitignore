@@ -166,3 +166,7 @@ cython_debug/
 replit.nix
 pyproject.toml
 poetry.lock
+
+# txt
+vacancies.txt
+req.txt
