@@ -4,7 +4,7 @@ class HHScribe:
 
     @staticmethod
     def write_down(file_name, text):
-      # TODO нет аннотации
+        # TODO нет аннотации
         '''Метод для записи данных в файл.
 
         :param file_name: имя файла
@@ -15,7 +15,7 @@ class HHScribe:
 
     @staticmethod
     def clear_file(file_name):
-      # TODO нет аннотации
+        # TODO нет аннотации
         '''Метод для очистки файла.
 
         :param file_name: имя файла
