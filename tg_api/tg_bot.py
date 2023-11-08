@@ -14,11 +14,10 @@ bot = telebot.TeleBot(os.environ['TOKEN'])
 
 @bot.message_handler(content_types=['text'])
 def get_text_messages(message):
-    '''Метод для обработки сообщение в телеграм.
+    """Метод для обработки сообщение в телеграм.
 
     :param message: сообщение от пользователя
-    '''
-    # TODO докстринга всегда в двойных кавычках - """text"""
+    """
 
     lower_text = message.text.lower()
 
