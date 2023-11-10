@@ -1,57 +1,152 @@
 """Тут пишешь тесты."""
 from decimal import Decimal
 from hh_api.hh_api import HeadHunterAPI
-from hh_api.hh_data_process import HeadHunterDataProcessing
-from hh_api.hh_params import HeadHunterParametersForRequest
+from hh_api.hh_data_process import HeadHunterDataProcessing as hhdp
+from hh_api.hh_params import HeadHunterParametersForRequest as hhpfr
 import pytest
 
 
 @pytest.mark.parametrize("a, b, c, d", [("qa", 1, 1, True),
                                         ("aqa", -1, 3, False)])
-def test_1(a, b, c, d):
+def test_hhpfr_vacancies(a, b, c, d):
   """Тест HeadHunterParametersForRequest.vacancies"""
 
-  params = HeadHunterParametersForRequest.vacancies(text=a,
-                                                    area=b,
-                                                    per_page=c,
-                                                    only_with_salary=d)
+  params = hhpfr.vacancies(text=a, area=b, per_page=c, only_with_salary=d)
   assert params["text"] == f'NAME:{a}'
   assert params["area"] == b
   assert params["per_page"] == c
   assert params["only_with_salary"] is d
 
 
-@pytest.mark.parametrize("salari_from, salary_to, salary_gross",
-                         [(100_000, 500_000, True), (145_000, 350_000, True)])
-def test_2(salari_from, salary_to, salary_gross):
-  """Тест HeadHunterDataProcessing.get_salary_value. gross true"""
+@pytest.mark.parametrize("salari_from, salary_to, expexted_result",
+                         [(100_000, 500_000, Decimal(261_000)),
+                          (145_000, 350_000, Decimal(215_325))])
+def test_hhdp_get_salary_value_gross_true(salari_from, salary_to,
+                                          expexted_result):
+  """Тест HeadHunterDataProcessing.get_salary_value. all True."""
 
-  salary = HeadHunterDataProcessing.get_salary_value({
-      'salary': {
+  salary = hhdp.get_salary_value(
+      {'salary': {
           'from': salari_from,
           'to': salary_to,
-          'gross': salary_gross
-      }
-  })
+          'gross': True
+      }})
 
-  assert salary == Decimal((salari_from + salary_to) / 2 * 0.87)
+  assert salary == expexted_result
 
 
-@pytest.mark.parametrize("salari_from, salary_to, salary_gross",
-                         [(100_000, 500_000, False),
-                          (145_000, 350_000, False)])
-def test_3(salari_from, salary_to, salary_gross):
-  """Тест HeadHunterDataProcessing.get_salary_value. gross folse"""
+@pytest.mark.parametrize("salari_from, salary_to, expexted_result",
+                         [(100_000, 500_000, Decimal(300_000)),
+                          (145_000, 350_000, Decimal(247_500))])
+def test_hhdp_get_salary_value_gross_false(salari_from, salary_to,
+                                           expexted_result):
+  """Тест HeadHunterDataProcessing.get_salary_value. gross False. from, to - True."""
 
-  salary = HeadHunterDataProcessing.get_salary_value({
-      'salary': {
+  salary = hhdp.get_salary_value(
+      {'salary': {
           'from': salari_from,
           'to': salary_to,
-          'gross': salary_gross
-      }
-  })
+          'gross': False
+      }})
 
-  assert salary == Decimal((salari_from + salary_to) / 2)
+  assert salary == expexted_result
+
+
+@pytest.mark.parametrize("salary_to, expexted_result",
+                         [(500_000, Decimal(391_500)),
+                          (350_000, Decimal(274_050))])
+def test_hhdp_get_salary_value_from_false(salary_to, expexted_result):
+  """Тест HeadHunterDataProcessing.get_salary_value. gross, to - True. from - ''."""
+
+  salary = hhdp.get_salary_value(
+      {'salary': {
+          'from': '',
+          'to': salary_to,
+          'gross': True
+      }})
+
+  assert salary == expexted_result
+
+
+@pytest.mark.parametrize("salary_from, expexted_result",
+                         [(500_000, Decimal(478_500)),
+                          (350_000, Decimal(334_950))])
+def test_hhdp_get_salary_value_to_false(salary_from, expexted_result):
+  """Тест HeadHunterDataProcessing.get_salary_value. gross, from - True. to - ''."""
+
+  salary = hhdp.get_salary_value(
+      {'salary': {
+          'from': salary_from,
+          'to': '',
+          'gross': True
+      }})
+
+  assert salary == expexted_result
+
+
+@pytest.mark.parametrize("salary_to, expexted_result",
+                         [(500_000, Decimal(450_000)),
+                          (350_000, Decimal(315_000))])
+def test_hhdp_get_salary_value_from_false_gross_false(salary_to,
+                                                      expexted_result):
+  """Тест HeadHunterDataProcessing.get_salary_value. gross - False, to - True. from - ''."""
+
+  salary = hhdp.get_salary_value(
+      {'salary': {
+          'from': '',
+          'to': salary_to,
+          'gross': False
+      }})
+
+  assert salary == expexted_result
+
+
+@pytest.mark.parametrize("salary_from, expexted_result",
+                         [(500_000, Decimal(550_000)),
+                          (350_000, Decimal(385_000))])
+def test_hhdp_get_salary_value_to_false_gross_false(salary_from,
+                                                    expexted_result):
+  """Тест HeadHunterDataProcessing.get_salary_value. gross - False, from - True. to - ''."""
+
+  salary = hhdp.get_salary_value(
+      {'salary': {
+          'from': salary_from,
+          'to': '',
+          'gross': False
+      }})
+
+  assert salary == expexted_result
+
+@pytest.mark.parametrize("currency, expexted_result", [("RUR", "RUR"),
+                                                       ("EUR", "EUR"),
+                                                       ("USD", "USD"),
+                                                       ("", ""),
+                                                       ("belarusskie_zaichiki", "belarusskie_zaichiki")])
+def test_hhdp_get_salary_currency(currency, expexted_result):
+
+  name_currency = hhdp.get_salary_currency(
+    {'salary': {
+      'currency': currency
+      }})
+
+  assert name_currency == expexted_result
+
+@pytest.mark.parametrize("link, expexted_result", [("https://hh.ru/vacancies/", "https://hh.ru/vacancies/"),
+                                                   ("youtu.be/dQw4w9WgXcQ", "youtu.be/dQw4w9WgXcQ"),
+                                                   ("bash.org/Hdsds98", "bash.org/Hdsds98"),
+                                                   ("", "")])
+                         
+def test_hhdp_get_link(link, expexted_result):
+
+  vacanci_link = hhdp.get_link(
+    {'alternate_url': link})
+
+  assert vacanci_link == expexted_result
+
+
+
+
+  
 
 
 # пример теста
