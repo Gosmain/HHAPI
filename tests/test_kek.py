@@ -117,36 +117,56 @@ def test_hhdp_get_salary_value_to_false_gross_false(salary_from,
 
   assert salary == expexted_result
 
-@pytest.mark.parametrize("currency, expexted_result", [("RUR", "RUR"),
-                                                       ("EUR", "EUR"),
-                                                       ("USD", "USD"),
-                                                       ("", ""),
-                                                       ("belarusskie_zaichiki", "belarusskie_zaichiki")])
-def test_hhdp_get_salary_currency(currency, expexted_result):
 
-  name_currency = hhdp.get_salary_currency(
-    {'salary': {
-      'currency': currency
-      }})
+@pytest.mark.parametrize("currency, expexted_result",
+                         [("RUR", "RUR"), ("EUR", "EUR"), ("USD", "USD"),
+                          ("", ""),
+                          ("belarusskie_zaichiki", "belarusskie_zaichiki")])
+def test_hhdp_get_salary_currency(currency, expexted_result):
+  """Тест HeadHunterDataProcessing.get_salary_currency."""
+
+  name_currency = hhdp.get_salary_currency({'salary': {'currency': currency}})
 
   assert name_currency == expexted_result
 
-@pytest.mark.parametrize("link, expexted_result", [("https://hh.ru/vacancies/", "https://hh.ru/vacancies/"),
-                                                   ("youtu.be/dQw4w9WgXcQ", "youtu.be/dQw4w9WgXcQ"),
-                                                   ("bash.org/Hdsds98", "bash.org/Hdsds98"),
-                                                   ("", "")])
-                         
-def test_hhdp_get_link(link, expexted_result):
 
-  vacanci_link = hhdp.get_link(
-    {'alternate_url': link})
+@pytest.mark.parametrize("link, expexted_result",
+                         [("qa pithon", "qa pithon"),
+                          ("aqa python", "aqa python"),
+                          ("разработчик", "разработчик"), ("", "")])
+def test_hhdp_get_link(link, expexted_result):
+  """Тест HeadHunterDataProcessing.get_link."""
+
+  vacanci_link = hhdp.get_link({'alternate_url': link})
 
   assert vacanci_link == expexted_result
 
 
+@pytest.mark.parametrize("name, expexted_result",
+                         [("qa pithon", "qa pithon"),
+                          ("aqa python", "aqa python"),
+                          ("разработчик", "разработчик"), ("", "")])
+def test_hhdp_get_name(name, expexted_result):
+  """Тест HeadHunterDataProcessing.get_name."""
+
+  vacanci_name = hhdp.get_name({'name': name})
+
+  assert vacanci_name == expexted_result
 
 
-  
+@pytest.mark.parametrize("requirement, expexted_result",
+                         [("qa pithon", "qa pithon"),
+                          ("aqa python", "aqa python"),
+                          ("разработчик", "разработчик"), ("", "")])
+def test_hhdp_get_requirement(requirement, expexted_result):
+  """Тест HeadHunterDataProcessing.get_requirement."""
+
+  vacanci_requirement = hhdp.get_requirement(
+      {'snippet': {
+          'requirement': requirement
+      }})
+
+  assert vacanci_requirement == expexted_result
 
 
 # пример теста
