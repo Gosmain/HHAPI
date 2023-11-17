@@ -5,16 +5,15 @@ from configs import config
 
 
 class HeadHunterDataProcessing:
-    '''Класс для обработки данных с hh.ru.
-    '''
+    """Класс для обработки данных с hh.ru."""
 
     @staticmethod
     def get_salary_value(item: Dict[str, Any]) -> Decimal:
-        '''Метод для получения значение зарплаты из вакансии.
+        """Метод для получения значение зарплаты из вакансии.
 
         :param item: вакансия
         :return: значение зарплаты
-        '''
+        """
 
         salary_gross = item['salary']['gross']
         salary_to = item['salary']['to']
@@ -30,36 +29,36 @@ class HeadHunterDataProcessing:
 
     @staticmethod
     def get_salary_currency(item: Dict[str, Any]) -> str:
-        '''Метод для получения значения валюты из вакансии.
+        """Метод для получения значения валюты из вакансии.
 
         :param item: вакансия
         :return: значение валюты
-        '''
+        """
         return item['salary']['currency']
 
     @staticmethod
     def get_link(item: Dict[str, Any]) -> str:
-        '''Метод для получения ссылки на вакансию.
+        """Метод для получения ссылки на вакансию.
 
         :param item: вакансия
         :return: ссылка
-        '''
+        """
         return item['alternate_url']
 
     @staticmethod
     def get_name(item: Dict[str, Any]) -> str:
-        '''Метод для получения названия вакансии.
+        """Метод для получения названия вакансии.
 
         :param item: вакансия
         :return: имя
-        '''
+        """
         return item['name']
 
     @staticmethod
     def get_requirement(item: Dict[str, Any]) -> str:
-        '''Метод для получения требований из вакансии.
+        """Метод для получения требований из вакансии.
 
         :param item: вакансия
         :return: требования
-        '''
+        """
         return item['snippet']['requirement']

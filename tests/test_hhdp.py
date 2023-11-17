@@ -6,16 +6,15 @@ from hh_api.hh_params import HeadHunterParametersForRequest as hhpfr
 import pytest
 
 
-@pytest.mark.parametrize("a, b, c, d", [("qa", 1, 1, True),
-                                        ("aqa", -1, 3, False)])
-def test_hhpfr_vacancies(a, b, c, d):
-  """Тест HeadHunterParametersForRequest.vacancies"""
+@pytest.mark.parametrize("text, area, per_page, only_with_salary", [("qa", 1, 1, True), ("aqa", -1, 3, False)])
+def test_hhpfr_vacancies(text, area, per_page, only_with_salary):
+    """Тест HeadHunterParametersForRequest.vacancies"""
 
-  params = hhpfr.vacancies(text=a, area=b, per_page=c, only_with_salary=d)
-  assert params["text"] == f'NAME:{a}'
-  assert params["area"] == b
-  assert params["per_page"] == c
-  assert params["only_with_salary"] is d
+    params = hhpfr.vacancies(text=text, area=area, per_page=per_page, only_with_salary=only_with_salary)
+    assert params["text"] == f'NAME:{text}'
+    assert params["area"] == area
+    assert params["per_page"] == per_page
+    assert params["only_with_salary"] is only_with_salary
 
 
 @pytest.mark.parametrize("salari_from, salary_to, expexted_result",
@@ -23,16 +22,16 @@ def test_hhpfr_vacancies(a, b, c, d):
                           (145_000, 350_000, Decimal(215_325))])
 def test_hhdp_get_salary_value_gross_true(salari_from, salary_to,
                                           expexted_result):
-  """Тест HeadHunterDataProcessing.get_salary_value. all True."""
+    """Тест HeadHunterDataProcessing.get_salary_value. all True."""
 
-  salary = hhdp.get_salary_value(
-      {'salary': {
-          'from': salari_from,
-          'to': salary_to,
-          'gross': True
-      }})
+    salary = hhdp.get_salary_value(
+        {'salary': {
+            'from': salari_from,
+            'to': salary_to,
+            'gross': True
+        }})
 
-  assert salary == expexted_result
+    assert salary == expexted_result
 
 
 @pytest.mark.parametrize("salari_from, salary_to, expexted_result",
@@ -40,48 +39,54 @@ def test_hhdp_get_salary_value_gross_true(salari_from, salary_to,
                           (145_000, 350_000, Decimal(247_500))])
 def test_hhdp_get_salary_value_gross_false(salari_from, salary_to,
                                            expexted_result):
-  """Тест HeadHunterDataProcessing.get_salary_value. gross False. from, to - True."""
+    """Тест HeadHunterDataProcessing.get_salary_value. gross False. from, to - True."""
 
-  salary = hhdp.get_salary_value(
-      {'salary': {
-          'from': salari_from,
-          'to': salary_to,
-          'gross': False
-      }})
+    salary = hhdp.get_salary_value(
+        {'salary': {
+            'from': salari_from,
+            'to': salary_to,
+            'gross': False
+        }}
+    )
 
-  assert salary == expexted_result
+    assert salary == expexted_result
 
 
 @pytest.mark.parametrize("salary_to, expexted_result",
                          [(500_000, Decimal(391_500)),
                           (350_000, Decimal(274_050))])
 def test_hhdp_get_salary_value_from_false(salary_to, expexted_result):
-  """Тест HeadHunterDataProcessing.get_salary_value. gross, to - True. from - ''."""
+    """Тест HeadHunterDataProcessing.get_salary_value. gross, to - True. from - ''."""
 
-  salary = hhdp.get_salary_value(
-      {'salary': {
-          'from': '',
-          'to': salary_to,
-          'gross': True
-      }})
+    salary = hhdp.get_salary_value(
+        {'salary': {
+            'from': '',
+            'to': salary_to,
+            'gross': True
+        }}
+    )
 
-  assert salary == expexted_result
+    assert salary == expexted_result
 
 
 @pytest.mark.parametrize("salary_from, expexted_result",
                          [(500_000, Decimal(478_500)),
                           (350_000, Decimal(334_950))])
 def test_hhdp_get_salary_value_to_false(salary_from, expexted_result):
-  """Тест HeadHunterDataProcessing.get_salary_value. gross, from - True. to - ''."""
+    """Тест HeadHunterDataProcessing.get_salary_value. gross, from - True. to - ''."""
 
-  salary = hhdp.get_salary_value(
-      {'salary': {
-          'from': salary_from,
-          'to': '',
-          'gross': True
-      }})
+    salary = hhdp.get_salary_value(
+        {
+            'salary':
+                {
+                    'from': salary_from,
+                    'to': '',
+                    'gross': True
+                }
+        }
+    )
 
-  assert salary == expexted_result
+    assert salary == expexted_result
 
 
 @pytest.mark.parametrize("salary_to, expexted_result",
@@ -89,16 +94,17 @@ def test_hhdp_get_salary_value_to_false(salary_from, expexted_result):
                           (350_000, Decimal(315_000))])
 def test_hhdp_get_salary_value_from_false_gross_false(salary_to,
                                                       expexted_result):
-  """Тест HeadHunterDataProcessing.get_salary_value. gross - False, to - True. from - ''."""
+    """Тест HeadHunterDataProcessing.get_salary_value. gross - False, to - True. from - ''."""
 
-  salary = hhdp.get_salary_value(
-      {'salary': {
-          'from': '',
-          'to': salary_to,
-          'gross': False
-      }})
+    salary = hhdp.get_salary_value(
+        {'salary': {
+            'from': '',
+            'to': salary_to,
+            'gross': False
+        }}
+    )
 
-  assert salary == expexted_result
+    assert salary == expexted_result
 
 
 @pytest.mark.parametrize("salary_from, expexted_result",
@@ -106,16 +112,16 @@ def test_hhdp_get_salary_value_from_false_gross_false(salary_to,
                           (350_000, Decimal(385_000))])
 def test_hhdp_get_salary_value_to_false_gross_false(salary_from,
                                                     expexted_result):
-  """Тест HeadHunterDataProcessing.get_salary_value. gross - False, from - True. to - ''."""
+    """Тест HeadHunterDataProcessing.get_salary_value. gross - False, from - True. to - ''."""
 
-  salary = hhdp.get_salary_value(
-      {'salary': {
-          'from': salary_from,
-          'to': '',
-          'gross': False
-      }})
+    salary = hhdp.get_salary_value(
+        {'salary': {
+            'from': salary_from,
+            'to': '',
+            'gross': False
+        }})
 
-  assert salary == expexted_result
+    assert salary == expexted_result
 
 
 @pytest.mark.parametrize("currency, expexted_result",
@@ -123,11 +129,11 @@ def test_hhdp_get_salary_value_to_false_gross_false(salary_from,
                           ("", ""),
                           ("belarusskie_zaichiki", "belarusskie_zaichiki")])
 def test_hhdp_get_salary_currency(currency, expexted_result):
-  """Тест HeadHunterDataProcessing.get_salary_currency."""
+    """Тест HeadHunterDataProcessing.get_salary_currency."""
 
-  name_currency = hhdp.get_salary_currency({'salary': {'currency': currency}})
+    name_currency = hhdp.get_salary_currency({'salary': {'currency': currency}})
 
-  assert name_currency == expexted_result
+    assert name_currency == expexted_result
 
 
 @pytest.mark.parametrize("link, expexted_result",
@@ -135,11 +141,11 @@ def test_hhdp_get_salary_currency(currency, expexted_result):
                           ("aqa python", "aqa python"),
                           ("разработчик", "разработчик"), ("", "")])
 def test_hhdp_get_link(link, expexted_result):
-  """Тест HeadHunterDataProcessing.get_link."""
+    """Тест HeadHunterDataProcessing.get_link."""
 
-  vacanci_link = hhdp.get_link({'alternate_url': link})
+    vacanci_link = hhdp.get_link({'alternate_url': link})
 
-  assert vacanci_link == expexted_result
+    assert vacanci_link == expexted_result
 
 
 @pytest.mark.parametrize("name, expexted_result",
@@ -147,11 +153,11 @@ def test_hhdp_get_link(link, expexted_result):
                           ("aqa python", "aqa python"),
                           ("разработчик", "разработчик"), ("", "")])
 def test_hhdp_get_name(name, expexted_result):
-  """Тест HeadHunterDataProcessing.get_name."""
+    """Тест HeadHunterDataProcessing.get_name."""
 
-  vacanci_name = hhdp.get_name({'name': name})
+    vacanci_name = hhdp.get_name({'name': name})
 
-  assert vacanci_name == expexted_result
+    assert vacanci_name == expexted_result
 
 
 @pytest.mark.parametrize("requirement, expexted_result",
@@ -159,15 +165,11 @@ def test_hhdp_get_name(name, expexted_result):
                           ("aqa python", "aqa python"),
                           ("разработчик", "разработчик"), ("", "")])
 def test_hhdp_get_requirement(requirement, expexted_result):
-  """Тест HeadHunterDataProcessing.get_requirement."""
+    """Тест HeadHunterDataProcessing.get_requirement."""
 
-  vacanci_requirement = hhdp.get_requirement(
-      {'snippet': {
-          'requirement': requirement
-      }})
+    vacanci_requirement = hhdp.get_requirement(
+        {'snippet': {
+            'requirement': requirement
+        }})
 
-  assert vacanci_requirement == expexted_result
-
-
-# пример теста
-# пример запуска python -m pytest tests
+    assert vacanci_requirement == expexted_result
